@@ -4,7 +4,7 @@ cd Thirdparty/DBoW2
 mkdir build
 cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release
-make -j
+make -j 1
 
 cd ../../g2o
 
@@ -13,7 +13,7 @@ echo "Configuring and building Thirdparty/g2o ..."
 mkdir build
 cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release
-make -j
+make -j 1
 
 cd ../../../
 
@@ -29,4 +29,4 @@ mkdir build
 cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release
 # -DOpenCV_DIR="/installation/OpenCV-3.4.4/"
-make -j
+make -j 1

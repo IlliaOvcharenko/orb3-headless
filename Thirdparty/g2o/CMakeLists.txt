@@ -3,6 +3,8 @@ SET(CMAKE_LEGACY_CYGWIN_WIN32 0)
 
 PROJECT(g2o)
 
+add_definitions(-w)
+
 SET(g2o_C_FLAGS)
 SET(g2o_CXX_FLAGS)
 

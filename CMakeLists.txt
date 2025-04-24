@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 2.8)
 project(ORB_SLAM3)
 
+# Suppress all warnings
+add_definitions(-w)
+
 IF(NOT CMAKE_BUILD_TYPE)
   SET(CMAKE_BUILD_TYPE Release)
 ENDIF()
@@ -33,18 +36,18 @@ endif()
 
 LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
 
-find_package(OpenCV 3 REQUIRED)
-if(NOT OpenCV_FOUND)
-   find_package(OpenCV 2.4.3 QUIET)
-   if(NOT OpenCV_FOUND)
-      message(FATAL_ERROR "OpenCV > 2.4.3 not found.")
-   endif()
-endif()
+find_package(OpenCV REQUIRED)
+# if(NOT OpenCV_FOUND)
+#    find_package(OpenCV 2.4.3 QUIET)
+#    if(NOT OpenCV_FOUND)
+#       message(FATAL_ERROR "OpenCV > 2.4.3 not found.")
+#    endif()
+# endif()
 
 MESSAGE("OPENCV VERSION:")
 MESSAGE(${OpenCV_VERSION})
 
-find_package(Eigen3 3.1.0 REQUIRED)
+find_package(Eigen3 3.3 REQUIRED)
 #find_package(Pangolin REQUIRED)
 
 include_directories(
@@ -56,8 +59,13 @@ ${EIGEN3_INCLUDE_DIR}
 )
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
+# src/PnPsolver.cc
+# src/Sim3Solver.cc
+# include/Sim3Solver.h
+# include/PnPsolver.h
 
 add_library(${PROJECT_NAME} SHARED
+src/Sim3Solver.cc
 src/System.cc
 src/Tracking.cc
 src/LocalMapping.cc
@@ -72,10 +80,8 @@ src/Atlas.cc
 src/Map.cc
 src/MapDrawer.cc
 src/Optimizer.cc
-src/PnPsolver.cc
 src/Frame.cc
 src/KeyFrameDatabase.cc
-src/Sim3Solver.cc
 src/Initializer.cc
 src/Viewer.cc
 src/ImuTypes.cc
@@ -84,6 +90,7 @@ src/CameraModels/Pinhole.cpp
 src/CameraModels/KannalaBrandt8.cpp
 src/OptimizableTypes.cpp
 src/MLPnPsolver.cpp
+include/Sim3Solver.h
 include/System.h
 include/Tracking.h
 include/LocalMapping.h
@@ -98,10 +105,8 @@ include/Atlas.h
 include/Map.h
 include/MapDrawer.h
 include/Optimizer.h
-include/PnPsolver.h
 include/Frame.h
 include/KeyFrameDatabase.h
-include/Sim3Solver.h
 include/Initializer.h
 include/Viewer.h
 include/ImuTypes.h
