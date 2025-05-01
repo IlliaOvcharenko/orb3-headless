@@ -5,3 +5,5 @@ cmake --install . --prefix ${INSTALL_PARENT_FOLDER}/orb3-headless-arm64 && \
 find ${INSTALL_PARENT_FOLDER}/orb3-headless-arm64/include/ -depth -type d -empty -delete && \
 cd ${INSTALL_PARENT_FOLDER} && \
 zip -r orb3-headless-arm64.zip orb3-headless-arm64/
+# add /lib folder to a loader runpath
+# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/lib
