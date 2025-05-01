@@ -3,4 +3,5 @@ INSTALL_PARENT_FOLDER=$1
 cd build && \
 cmake --install . --prefix ${INSTALL_PARENT_FOLDER}/orb3-headless-arm64 && \
 find ${INSTALL_PARENT_FOLDER}/orb3-headless-arm64/include/ -depth -type d -empty -delete && \
-zip -r ${INSTALL_PARENT_FOLDER}/orb3-headless-arm64.zip ${INSTALL_PARENT_FOLDER}/orb3-headless-arm64/
+cd ${INSTALL_PARENT_FOLDER} && \
+zip -r orb3-headless-arm64.zip orb3-headless-arm64/
