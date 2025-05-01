@@ -36,7 +36,7 @@ endif()
 
 LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
 
-find_package(OpenCV REQUIRED)
+find_package(OpenCV 4 REQUIRED)
 # if(NOT OpenCV_FOUND)
 #    find_package(OpenCV 2.4.3 QUIET)
 #    if(NOT OpenCV_FOUND)
@@ -132,69 +132,113 @@ ${PROJECT_SOURCE_DIR}/Thirdparty/g2o/lib/libg2o.so
 )
 
 
-# Build examples
+# # Build examples
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/RGB-D)
-add_executable(rgbd_tum
-Examples/RGB-D/rgbd_tum.cc)
-target_link_libraries(rgbd_tum ${PROJECT_NAME})
-
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Stereo)
-
-add_executable(stereo_kitti
-Examples/Stereo/stereo_kitti.cc)
-target_link_libraries(stereo_kitti ${PROJECT_NAME})
-
-add_executable(stereo_euroc
-Examples/Stereo/stereo_euroc.cc)
-target_link_libraries(stereo_euroc ${PROJECT_NAME})
-
-add_executable(stereo_tum_vi
-Examples/Stereo/stereo_tum_vi.cc)
-target_link_libraries(stereo_tum_vi ${PROJECT_NAME})
+# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/RGB-D)
+# add_executable(rgbd_tum
+# Examples/RGB-D/rgbd_tum.cc)
+# target_link_libraries(rgbd_tum ${PROJECT_NAME})
 
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Monocular)
+# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Stereo)
 
-add_executable(mono_tum
-Examples/Monocular/mono_tum.cc)
-target_link_libraries(mono_tum ${PROJECT_NAME})
+# add_executable(stereo_kitti
+# Examples/Stereo/stereo_kitti.cc)
+# target_link_libraries(stereo_kitti ${PROJECT_NAME})
 
-add_executable(mono_kitti
-Examples/Monocular/mono_kitti.cc)
-target_link_libraries(mono_kitti ${PROJECT_NAME})
+# add_executable(stereo_euroc
+# Examples/Stereo/stereo_euroc.cc)
+# target_link_libraries(stereo_euroc ${PROJECT_NAME})
 
-add_executable(mono_euroc
-Examples/Monocular/mono_euroc.cc)
-target_link_libraries(mono_euroc ${PROJECT_NAME})
-
-add_executable(mono_tum_vi
-Examples/Monocular/mono_tum_vi.cc)
-target_link_libraries(mono_tum_vi ${PROJECT_NAME})
+# add_executable(stereo_tum_vi
+# Examples/Stereo/stereo_tum_vi.cc)
+# target_link_libraries(stereo_tum_vi ${PROJECT_NAME})
 
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Monocular-Inertial)
+# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Monocular)
 
-add_executable(mono_inertial_euroc
-Examples/Monocular-Inertial/mono_inertial_euroc.cc)
-target_link_libraries(mono_inertial_euroc ${PROJECT_NAME})
+# add_executable(mono_tum
+# Examples/Monocular/mono_tum.cc)
+# target_link_libraries(mono_tum ${PROJECT_NAME})
 
-add_executable(mono_inertial_tum_vi
-Examples/Monocular-Inertial/mono_inertial_tum_vi.cc)
-target_link_libraries(mono_inertial_tum_vi ${PROJECT_NAME})
+# add_executable(mono_kitti
+# Examples/Monocular/mono_kitti.cc)
+# target_link_libraries(mono_kitti ${PROJECT_NAME})
 
+# add_executable(mono_euroc
+# Examples/Monocular/mono_euroc.cc)
+# target_link_libraries(mono_euroc ${PROJECT_NAME})
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Stereo-Inertial)
-
-add_executable(stereo_inertial_euroc
-Examples/Stereo-Inertial/stereo_inertial_euroc.cc)
-target_link_libraries(stereo_inertial_euroc ${PROJECT_NAME})
-
-
-add_executable(stereo_inertial_tum_vi
-Examples/Stereo-Inertial/stereo_inertial_tum_vi.cc)
-target_link_libraries(stereo_inertial_tum_vi ${PROJECT_NAME})
+# add_executable(mono_tum_vi
+# Examples/Monocular/mono_tum_vi.cc)
+# target_link_libraries(mono_tum_vi ${PROJECT_NAME})
 
 
+# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Monocular-Inertial)
 
+# add_executable(mono_inertial_euroc
+# Examples/Monocular-Inertial/mono_inertial_euroc.cc)
+# target_link_libraries(mono_inertial_euroc ${PROJECT_NAME})
+
+# add_executable(mono_inertial_tum_vi
+# Examples/Monocular-Inertial/mono_inertial_tum_vi.cc)
+# target_link_libraries(mono_inertial_tum_vi ${PROJECT_NAME})
+
+
+# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Stereo-Inertial)
+
+# add_executable(stereo_inertial_euroc
+# Examples/Stereo-Inertial/stereo_inertial_euroc.cc)
+# target_link_libraries(stereo_inertial_euroc ${PROJECT_NAME})
+
+
+# add_executable(stereo_inertial_tum_vi
+# Examples/Stereo-Inertial/stereo_inertial_tum_vi.cc)
+# target_link_libraries(stereo_inertial_tum_vi ${PROJECT_NAME})
+
+
+# Make a dist folder via install --prefix
+set(INSTALL_INCLUDE_DIR include)      # <prefix>/include
+set(INSTALL_LIB_DIR     lib)          # <prefix>/lib
+set(INSTALL_DATA_DIR    share/ORB_SLAM3)   # <prefix>/share/ORB_SLAM3
+
+# 1. Public headers
+install(
+    DIRECTORY
+        ${PROJECT_SOURCE_DIR}/
+        ${PROJECT_SOURCE_DIR}/include/
+        ${PROJECT_SOURCE_DIR}/include/CameraModels/
+    DESTINATION ${INSTALL_INCLUDE_DIR}    # <prefix>/include
+    FILES_MATCHING
+        PATTERN "*.h"
+        PATTERN "*.hpp"
+        PATTERN "build*"       EXCLUDE
+        PATTERN "*/build/*"    EXCLUDE
+)
+
+# 2. Main shared library
+install(TARGETS ${PROJECT_NAME}
+        LIBRARY DESTINATION ${INSTALL_LIB_DIR})
+
+# 3. Third-party libs built in-tree
+install(FILES
+        ${PROJECT_SOURCE_DIR}/Thirdparty/DBoW2/lib/libDBoW2.so
+        ${PROJECT_SOURCE_DIR}/Thirdparty/g2o/lib/libg2o.so
+        DESTINATION ${INSTALL_LIB_DIR})
+
+# 4. Camera YAMLs
+install(
+    DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/
+    DESTINATION ${INSTALL_DATA_DIR}/ExamplesCameraConfigs
+    FILES_MATCHING 
+        PATTERN "*.yaml" PATTERN "*.yml"
+        PATTERN "build*"       EXCLUDE
+        PATTERN "*/build/*"    EXCLUDE
+)
+
+# 5. Vocabulary
+install(
+    DIRECTORY ${PROJECT_SOURCE_DIR}/Vocabulary/
+    DESTINATION ${INSTALL_DATA_DIR}/Vocabulary
+    FILES_MATCHING PATTERN "ORBvoc.txt"
+)
